@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: expense-tracker-api
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node index.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false # You'll set this manually in the Render dashboard
+      - key: JWT_SECRET
+        sync: false # You'll set this manually in the Render dashboard
