@@ -1,8 +1,8 @@
 # General
 node_modules/
 .DS_Store
-.env
-.env.local
+# .env
+# .env.local
 *.log
 
 # Expo / React Native (Client)
