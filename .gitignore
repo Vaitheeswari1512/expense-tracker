@@ -1,0 +1,34 @@
+# General
+node_modules/
+.DS_Store
+.env
+.env.local
+*.log
+
+# Expo / React Native (Client)
+client/.expo/
+client/dist/
+client/web-build/
+client/expo-env.d.ts
+client/ios/
+client/android/
+client/*.jks
+client/*.p8
+client/*.p12
+client/*.key
+client/*.mobileprovision
+
+# Node.js Server
+server/data/
+server/dist/
+server/build/
+
+# IDEs
+.idea/
+.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/
