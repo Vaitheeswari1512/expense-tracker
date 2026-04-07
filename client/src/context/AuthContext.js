@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform, AppState, Alert } from 'react-native';
+import { jwtDecode } from 'jwt-decode';
 import { BASE_URL } from '../constants/config';
 
 export const AuthContext = createContext();
@@ -33,7 +34,7 @@ export const AuthProvider = ({ children }) => {
                 }
             } catch (e) {
                 console.log('loadUser error:', e);
-                try { await AsyncStorage.clear(); } catch(err) {}
+                try { await AsyncStorage.clear(); } catch (err) { }
                 setUser(null);
                 setToken(null);
             } finally {
@@ -126,7 +127,7 @@ export const AuthProvider = ({ children }) => {
 
             if (response.ok) {
                 console.log("Registration Success - Auto logging in...");
-                
+
                 try {
                     await AsyncStorage.multiSet([
                         ['token', data.token],
@@ -136,7 +137,7 @@ export const AuthProvider = ({ children }) => {
                     console.error("Storage Error during register:", storageErr);
                     return { success: false, error: 'Device storage failed' };
                 }
-                
+
                 setToken(data.token);
                 setUser(data.user);
                 console.log("Register: AsyncStorage saved & state updated");
@@ -155,11 +156,11 @@ export const AuthProvider = ({ children }) => {
         try {
             // 1. Get all keys to perform a thorough cleanup
             const allKeys = await AsyncStorage.getAllKeys();
-            
+
             // 2. Identify keys to remove (core auth keys + user-specific scoped keys)
-            const keysToRemove = allKeys.filter(key => 
+            const keysToRemove = allKeys.filter(key =>
                 ['token', 'user', 'transactions', 'profileImage', 'initialBalance', 'lastBackupDate', 'registered_users'].includes(key) ||
-                key.startsWith('transactions_') || 
+                key.startsWith('transactions_') ||
                 key.startsWith('app_notifications_') ||
                 key.startsWith('profile_image_')
             );
@@ -168,7 +169,7 @@ export const AuthProvider = ({ children }) => {
             if (keysToRemove.length > 0) {
                 await AsyncStorage.multiRemove(keysToRemove);
             }
-            
+
             // 4. Reset local state
             setToken(null);
             setUser(null);
@@ -236,7 +237,7 @@ export const AuthProvider = ({ children }) => {
                 const updatedUser = { ...user, profileImage: data.user.profileImage };
                 await AsyncStorage.setItem('user', JSON.stringify(updatedUser));
                 await AsyncStorage.setItem('profileImage', data.user.profileImage);
-                
+
                 const usersStr = await AsyncStorage.getItem('registered_users');
                 if (usersStr) {
                     const users = JSON.parse(usersStr);
@@ -274,7 +275,7 @@ export const AuthProvider = ({ children }) => {
             const updatedUser = { ...user, profileImage: null };
             await AsyncStorage.setItem('user', JSON.stringify(updatedUser));
             await AsyncStorage.removeItem('profileImage');
-            
+
             const usersStr = await AsyncStorage.getItem('registered_users');
             if (usersStr) {
                 const users = JSON.parse(usersStr);

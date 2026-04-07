@@ -8,6 +8,11 @@ import axios from 'axios';
 import { Platform, Alert } from 'react-native';
 import CryptoJS from 'crypto-js';
 
+let FileSystem = null;
+let Sharing = null;
+let DocumentPicker = null;
+let SecureStore = null;
+
 if (Platform.OS !== 'web') {
     try { FileSystem = require('expo-file-system'); } catch (e) { console.warn('expo-file-system not available', e); }
     try { Sharing = require('expo-sharing'); } catch (e) { console.warn('expo-sharing not available', e); }

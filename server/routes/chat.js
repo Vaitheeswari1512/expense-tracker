@@ -4,12 +4,15 @@ const verifyToken = require('./verifyToken');
 const Transaction = require('../models/Transaction');
 const User = require('../models/User');
 const mongoose = require('mongoose');
-const { OpenAI } = require('openai');
 require('dotenv').config();
 
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-});
+let openai = null;
+if (process.env.OPENAI_API_KEY) {
+    const { OpenAI } = require('openai');
+    openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY
+    });
+}
 
 // ── HELPERS & INTENT DETECTION ──────────────────────────────────────────────
 
@@ -119,6 +122,12 @@ router.post('/', verifyToken, async (req, res) => {
     const userId = req.user.id;
 
     if (!message) return res.status(400).json({ success: false, reply: "Message is required." });
+    if (!openai) {
+        return res.status(503).json({
+            success: false,
+            reply: "AI chat is disabled because OPENAI_API_KEY is not configured."
+        });
+    }
 
     try {
         const intent = detectIntent(message);
@@ -193,8 +202,5 @@ You are "Antigravity," the Intelligent Financial Assistant for this Expense Trac
         res.status(500).json({ success: false, reply: "I can't see your wallet right now. Please check if your cloud database is connected!" });
     }
 });
-
-module.exports = router;
-
 
 module.exports = router;

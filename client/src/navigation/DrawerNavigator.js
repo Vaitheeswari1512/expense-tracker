@@ -116,10 +116,6 @@ function CustomDrawerContent(props) {
                 </TouchableOpacity>
                 <TouchableOpacity onPress={async () => {
                     await logout();
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Login' }],
-                    });
                 }} style={[styles.footerBtn, { backgroundColor: COLORS.danger + '10' }]}>
                     <Icon name="log-out-outline" size={22} color={COLORS.danger} />
                     <Text style={[styles.footerBtnText, { color: COLORS.danger, fontWeight: 'bold' }]}>Logout</Text>

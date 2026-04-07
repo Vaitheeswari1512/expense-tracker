@@ -9,9 +9,7 @@ export const backgroundTrackerTask = async (taskData) => {
         const token = await AsyncStorage.getItem('token');
         const user = await AsyncStorage.getItem('user');
         
-        // We might also need the BASE_URL
-        // The default fallback check in context:
-        const BASE_URL = 'http://10.155.41.99:5000/api'; 
+        const BASE_URL = 'https://expennse-tracker-server.onrender.com/api';
 
         if (taskData) {
             await processAutoTransaction(

@@ -30,10 +30,6 @@ const SettingsScreen = () => {
                 { text: 'Cancel', style: 'cancel' },
                 { text: 'Logout', onPress: async () => {
                     await logout();
-                    navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Login' }],
-                    });
                 }, style: 'destructive' }
             ]
         );
